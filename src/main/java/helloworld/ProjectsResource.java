@@ -1,5 +1,6 @@
 package helloworld;
 
+import com.atlassian.applinks.api.ApplicationLinkService;
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.security.PermissionManager;
@@ -28,6 +29,8 @@ public class ProjectsResource
     private PermissionManager permissionManager;
     private UserUtil userUtil;
 
+    private final ApplicationLinkService appLinkService;
+
     /**
      * Constructor.
      * @param userManager a SAL object used to find remote usernames in
@@ -43,6 +46,7 @@ public class ProjectsResource
         this.userManager = userManager;
         this.userUtil = userUtil;
         this.permissionManager = permissionManager;
+        this.appLinkService = null;
     }
 
     /**
@@ -82,4 +86,38 @@ public class ProjectsResource
         // to XML or JSON.
         return Response.ok(allProjects).build();
     }
+//
+//    @GET
+//    @Path("hw")
+//    public Response getHw() throws ResponseException, CredentialsRequiredException, TypeNotInstalledException {
+//        ApplicationLink appLink = getApplicationLink(null);
+//
+//        String jql = new JqlBuilder()
+//                .projectKeys("PROJ")
+//                .issueTypes("SUB-task")
+//                .buildRawJql();
+//        String url = "http://wn-kizdebski-01:2990/jira/rest/api/2/search?jql=project%20%3D%20PROJ%20and%20Sprint%20%3D%201%20and%20type%20%3D%20Sub-task%20ORDER%20BY%20key%20asc&fields=assignee%2Cprogress%2Cproject%2Cissuetype%2Cstatus";
+//        AbstractJiraClient client = new AbstractJiraClient();
+//
+//        ApplicationLinkRequest request = client.createRequest(appLink, Request.MethodType.GET, url);
+//        String response = client.executeRequest(request);
+//
+//        return Response.ok(response).build();
+//    }
+//    private ApplicationLink getApplicationLink(String applicationId) throws TypeNotInstalledException {
+//        return Util.getApplicationLink(appLinkService, applicationId);
+//    }
+//
+//    @GET
+//    @Path("get2")
+//    public Response getHw2() throws ResponseException, CredentialsRequiredException, TypeNotInstalledException, URISyntaxException, ExecutionException, InterruptedException {
+//        AsynchronousJiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
+//        URI jiraServerUri = new URI("http://localhost:8090/jira");
+//        JiraRestClient restClient = (JiraRestClient) factory.createWithBasicHttpAuthentication(jiraServerUri, "admin", "admin");
+//
+//        com.atlassian.jira.rest.client.api.domain.SearchResult result = restClient.getSearchClient().searchJql("").get();
+//
+//
+//        return Response.ok(result.toString()).build();
+//    }
 }

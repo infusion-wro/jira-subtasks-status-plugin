@@ -20,6 +20,11 @@
     <resource type="download" name="i18n/ALL_ALL.xml" location="i18n/ALL_ALL.xml">
         <param name="content-type" value="text/xml; charset=UTF-8"/>
     </resource>
+    <web-resource key="helloworld-resources" name="helloworld Web Resources">
+        <resource type="download" name="helloworld.js" location="/js/helloworld.js"/>
+        <context>helloworld</context>
+    </web-resource>
+
 
     <!--
         Automatically finds all JAX-RS resource classes in the plugin and
