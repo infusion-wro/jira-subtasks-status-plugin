@@ -30,8 +30,44 @@ function initGadget() {
                     useOauth: "/rest/gadget/1.0/currentUser",
                     view: {
                         template: function(args) {
-                            console.log(args);
+                            console.log("args: ",args);
                             var gadget = this;
+
+                            var projectKey = gadget.getPref("jiraProject");
+                            var sprintsNo = gadget.getPref("sprintsNo");
+                            var allSprints;
+
+
+                            AJS.$.ajax({
+                                //url: atlassianBaseUrl + "/rest/greenhopper/1.0/rapidviews/list?projectKey=PROJ ",
+                                url: "/rest/greenhopper/1.0/rapidviews/list?projectKey="+projectKey,
+                                type: "GET",
+                                dataType: "json",
+                                contentType: "application/json",
+                                success:
+                                    function (views) {
+                                        //todo Here probably can be more than one projectview for project
+                                        console.log("views: ",views);
+                                        var viewId = views.views[0].id;
+                                        AJS.$.ajax({
+                                            //url: atlassianBaseUrl + "/rest/greenhopper/1.0/rapidviews/list?projectKey=PROJ ",
+                                            url: "/rest/greenhopper/1.0/sprintquery/"+viewId+"?includeHistoricSprints=false&includeFutureSprints=true",
+                                            type: "GET",
+                                            dataType: "json",
+                                            contentType: "application/json",
+                                            success:
+                                                function (sprints) {
+                                                    allSprints=_.first(sprints.sprints,sprintsNo);
+                                                    //todo Here probably can be more than one projectview for project
+                                                    console.log("sprints ",sprints);
+                                                    console.log("allSprints ",allSprints);
+                                                    gadget.getView().html("<div>"+allSprints+"</div>");
+
+                                                }
+                                        });
+                                    }
+                            });
+
 
                             var projectList = AJS.$("<ul/>");
 
@@ -50,7 +86,7 @@ function initGadget() {
                              projectKey = gadget.getPref("jiraProject");
                              console.log("JIRA project key:", projectKey);
 
-                            gadget.getView().html("<div>"+args.projectData.projects+"</div>");
+                            gadget.getView().html("<div>"+allSprints+"</div>");
                             //gadget.getView().html(projectList);
 
 
@@ -77,7 +113,14 @@ function initGadget() {
                                             type: "string",
                                             value: "",
                                             label: "jira project"
-                                        }, AJS.gadget.fields.nowConfigured()]
+                                        },
+                                        {
+                                            userpref: "sprintsNo",
+                                            type: "int",
+                                            value: "",
+                                            label: "sprints"
+                                        },
+                                        AJS.gadget.fields.nowConfigured()]
                                         }
                         }
                     }

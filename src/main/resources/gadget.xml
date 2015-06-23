@@ -19,7 +19,8 @@
         <Locale messages="__ATLASSIAN_BASE_URL__/download/resources/jira-gadget-tutorial-plugin/i18n/ALL_ALL.xml"/>
     </ModulePrefs>
 
-    <UserPref name="jiraProject" datatype="string" default_value="proj"/>
+    <UserPref name="jiraProject" datatype="string" default_value=""/>
+    <UserPref name="sprintsNo" datatype="int" default_value="1"/>
     <UserPref name="isConfigured" datatype="hidden" default_value="false"/>
     <Content type="html" view="profile">
         <![CDATA[
