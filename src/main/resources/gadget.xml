@@ -12,9 +12,15 @@
         <Require feature="views" />
         <Require feature="settitle"/>
         <Require feature="oauthpopup" />
+        <Require feature="minimessage"/>
+        <Require feature="setprefs"/>
+        <Require feature="dynamic-height"/>
         #oauth
         <Locale messages="__ATLASSIAN_BASE_URL__/download/resources/jira-gadget-tutorial-plugin/i18n/ALL_ALL.xml"/>
     </ModulePrefs>
+
+    <UserPref name="jiraProject" datatype="string" default_value="proj"/>
+    <UserPref name="isConfigured" datatype="hidden" default_value="false"/>
     <Content type="html" view="profile">
         <![CDATA[
         #requireResource("com.atlassian.jira.gadgets:common")

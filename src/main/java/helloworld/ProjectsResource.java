@@ -86,7 +86,7 @@ public class ProjectsResource
         // to XML or JSON.
         return Response.ok(allProjects).build();
     }
-//
+
 //    @GET
 //    @Path("hw")
 //    public Response getHw() throws ResponseException, CredentialsRequiredException, TypeNotInstalledException {

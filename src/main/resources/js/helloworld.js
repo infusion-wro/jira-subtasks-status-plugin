@@ -5,10 +5,7 @@ var epicCaption;
 
 var atlassianBaseUrl;
 
-// configure _.template to use moustache syntax
-_.templateSettings = {
-    interpolate: /\{\{(.+?)\}\}/g
-};
+
 
 function startGadget(baseUrl) {
     atlassianBaseUrl = baseUrl;
@@ -33,6 +30,7 @@ function initGadget() {
                     useOauth: "/rest/gadget/1.0/currentUser",
                     view: {
                         template: function(args) {
+                            console.log(args);
                             var gadget = this;
 
                             var projectList = AJS.$("<ul/>");
@@ -49,8 +47,11 @@ function initGadget() {
                                 );
                             });
 
+                             projectKey = gadget.getPref("jiraProject");
+                             console.log("JIRA project key:", projectKey);
+
                             gadget.getView().html("<div>"+args.projectData.projects+"</div>");
-                            gadget.getView().html(projectList);
+                            //gadget.getView().html(projectList);
 
 
                         },
@@ -58,10 +59,27 @@ function initGadget() {
                             key: "projectData",
                             ajaxOptions: function() {
                                 return {
-                                    url: "/rest/tutorial-gadget/1.0/projects.json"
+                                    type: "GET",
+                                    dataType: "json",
+                                    contentType: "application/json",
+                                    //url: "/rest/tutorial-gadget/1.0/projects.json"
+                                    url: "/rest/api/2/search?jql=project%20%3D%20PROJ%20and%20Sprint%20%3D%201%20and%20type%20%3D%20Sub-task%20ORDER%20BY%20key%20asc&fields=assignee%2Cprogress%2Cproject%2Cissuetype%2Cstatus.json"
                                 };
                             }
                         }]
+                    },
+                    config: {
+                        descriptor: function(args){
+                                return {
+                                    fields:[
+                                        {
+                                            userpref: "jiraProject",
+                                            type: "string",
+                                            value: "",
+                                            label: "jira project"
+                                        }, AJS.gadget.fields.nowConfigured()]
+                                        }
+                        }
                     }
                 });
             }
