@@ -70,7 +70,20 @@ function initGadget() {
                                                         var sp = argSprints.sprints[i];
                                                         var id = sp.id;
                                                         var name = sp.name;
-                                                        sprints.append(AJS.$("<bold/>").text(name))
+                                                        sprints.append(AJS.$("<b/>").text(name))
+                                                        AJS.$.ajax({
+                                                            url: "/rest/greenhopper/1.0/rapid/charts/sprintreport?rapidViewId="+argSprints.rapidViewId+"&sprintId="+id,
+                                                            type: "GET",
+                                                            async:false,
+                                                            dataType: "json",
+                                                            contentType: "application/json",
+                                                            success:
+                                                                function (args) {
+                                                                    console.log(args.sprint)
+                                                                    sprints.append(" start date: "+args.sprint.startDate+" end date: "+args.sprint.endDate)
+                                                                }
+
+                                                        })
 
                                                         AJS.$.ajax({
                                                             url: "/rest/api/2/search?jql=project%20%3D%20"+projectKey+"%20and%20Sprint%20%3D%20"+id+"%20and%20type%20%3D%20Sub-task%20ORDER%20BY%20key%20asc&fields=assignee%2Cprogress%2Cproject%2Cissuetype%2Cstatus.json",
