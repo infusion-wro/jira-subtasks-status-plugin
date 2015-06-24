@@ -39,6 +39,8 @@ function initGadget() {
 
                             var projectKey = gadget.getPref("jiraProject");
                             var sprintsNo = gadget.getPref("sprintsNo");
+                            console.log('projectKey ',projectKey)
+                            console.log('sprintsNo ',sprintsNo)
                             var allSprints;
 
 
@@ -54,7 +56,6 @@ function initGadget() {
                                         console.log("views: ",views);
                                         var viewId = views.views[0].id;
                                         AJS.$.ajax({
-                                            //url: atlassianBaseUrl + "/rest/greenhopper/1.0/rapidviews/list?projectKey=PROJ ",
                                             url: "/rest/greenhopper/1.0/sprintquery/"+viewId+"?includeHistoricSprints=false&includeFutureSprints=true",
                                             type: "GET",
                                             dataType: "json",
@@ -62,9 +63,8 @@ function initGadget() {
                                             success:
                                                 function (argSprints) {
                                                     var ids =_.first(argSprints.sprints,sprintsNo).map(function(sprint){return sprint.id});
+                                                    console.log('sprintsNo ',sprintsNo)
                                                     console.log('sprints',_.first(argSprints.sprints,sprintsNo))
-                                                    //todo for every id
-
                                                     var sprints = AJS.$("<div/>");
                                                     for(i=0; i<sprintsNo;i++){
                                                         var sp = argSprints.sprints[i];
@@ -112,16 +112,19 @@ function initGadget() {
                                                         });
                                                     }
                                                     displayInGadget(sprints);
+                                                },
+                                             error: function(args){
+                                                 console.log('Error while retrieving sprints for rapidview: ',args.responseText);
+                                                 displayInGadget(AJS.$("<div/>").text(args.responseText));
 
-                                                    //todo Here probably can be more than one projectview for project
-//                                                    console.log("sprints ",sprints);
-//                                                    console.log("allSprints ",allSprints);
-//                                                    displayInGadget("<div>"+allSprints+"</div>");
-
-
-                                                }
+                                             }
                                         });
-                                    }
+                                    },
+                                error: function(args){
+                                    console.log('Error while retrieving rapidviews for project, args: ',args.responseText);
+                                    displayInGadget(AJS.$("<div/>").text(args.responseText));
+
+                                }
                             });
 
 
