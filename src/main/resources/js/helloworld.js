@@ -4,7 +4,7 @@ var projectKey;
 var epicCaption;
 
 var atlassianBaseUrl;
-
+var gadget;
 
 
 function startGadget(baseUrl) {
@@ -24,8 +24,12 @@ function startGadget(baseUrl) {
 //    });
 }
 
+
+function displayInGadget(content){
+    gadget.getView().html(content);
+}
 function initGadget() {
-                var gadget = AJS.Gadget({
+                gadget = AJS.Gadget({
                     baseUrl: atlassianBaseUrl,
                     useOauth: "/rest/gadget/1.0/currentUser",
                     view: {
@@ -56,12 +60,64 @@ function initGadget() {
                                             dataType: "json",
                                             contentType: "application/json",
                                             success:
-                                                function (sprints) {
-                                                    allSprints=_.first(sprints.sprints,sprintsNo);
+                                                function (argSprints) {
+                                                    var ids =_.first(argSprints.sprints,sprintsNo).map(function(sprint){return sprint.id});
+                                                    console.log('sprints',_.first(argSprints.sprints,sprintsNo))
+                                                    //todo for every id
+
+                                                    var sprints = AJS.$("<div/>");
+                                                    for(i=0; i<sprintsNo;i++){
+                                                        var sp = argSprints.sprints[i];
+                                                        var id = sp.id;
+                                                        var name = sp.name;
+                                                        sprints.append(AJS.$("<bold/>").text(name))
+
+                                                        AJS.$.ajax({
+                                                            url: "/rest/api/2/search?jql=project%20%3D%20"+projectKey+"%20and%20Sprint%20%3D%20"+id+"%20and%20type%20%3D%20Sub-task%20ORDER%20BY%20key%20asc&fields=assignee%2Cprogress%2Cproject%2Cissuetype%2Cstatus.json",
+                                                            type: "GET",
+                                                            async:false,
+                                                            dataType: "json",
+                                                            contentType: "application/json",
+                                                            success:
+                                                                function (arg) {
+                                                                    var allsubtasks =_.map(arg.issues,function(issue){
+                                                                                        return {
+                                                                                            assigned: issue.fields.assignee.displayName,
+                                                                                            orgTime: issue.fields.progress.total,
+                                                                                            remaining: issue.fields.progress.total - issue.fields.progress.progress,
+                                                                                            };
+                                                                        });
+                                                                    var subtasks=_.groupBy(allsubtasks,function(subtask){return subtask.assigned;})
+                                                                    var grouped = _.map(subtasks, function(a){
+                                                                        console.log(a);
+                                                                        return _.reduce(a,function(memo,fold){
+                                                                            return {
+                                                                                assigned: memo.assigned,
+                                                                                orgTime: memo.orgTime + fold.orgTime,
+                                                                                remaining: memo.remaining + fold.remaining,
+                                                                                };
+                                                                            });
+                                                                        })
+
+                                                                    var userList = AJS.$("<ul/>");
+                                                                    AJS.$(grouped).each(function(group) {
+                                                                        console.log('group',this.assigned)
+                                                                        userList.append(
+                                                                            AJS.$("<li/>").text(this.assigned +" estimated time: "+this.orgTime/3600 + " remainging: "+this.remaining/3600))
+
+                                                                    });
+                                                                    sprints.append(userList);
+
+                                                                }
+                                                        });
+                                                    }
+                                                    displayInGadget(sprints);
+
                                                     //todo Here probably can be more than one projectview for project
-                                                    console.log("sprints ",sprints);
-                                                    console.log("allSprints ",allSprints);
-                                                    gadget.getView().html("<div>"+allSprints+"</div>");
+//                                                    console.log("sprints ",sprints);
+//                                                    console.log("allSprints ",allSprints);
+//                                                    displayInGadget("<div>"+allSprints+"</div>");
+
 
                                                 }
                                         });
@@ -69,39 +125,18 @@ function initGadget() {
                             });
 
 
-                            var projectList = AJS.$("<ul/>");
 
-                            AJS.$(args.projectData.projects).each(function() {
-                                projectList.append(
-                                    AJS.$("<li/>").append(
-                                        AJS.$("<a/>").attr({
-                                            target: "_parent",
-                                            title: gadgets.util.escapeString(this.key),
-                                            href: atlassianBaseUrl+ "/browse/" + this.key
-                                        }).text(this.name)
-                                    )
-                                );
-                            });
-
-                             projectKey = gadget.getPref("jiraProject");
-                             console.log("JIRA project key:", projectKey);
-
-                            gadget.getView().html("<div>"+allSprints+"</div>");
-                            //gadget.getView().html(projectList);
-
-
-                        },
+                        }
+                        ,
                         args: [{
-                            key: "projectData",
-                            ajaxOptions: function() {
-                                return {
-                                    type: "GET",
-                                    dataType: "json",
-                                    contentType: "application/json",
-                                    //url: "/rest/tutorial-gadget/1.0/projects.json"
-                                    url: "/rest/api/2/search?jql=project%20%3D%20PROJ%20and%20Sprint%20%3D%201%20and%20type%20%3D%20Sub-task%20ORDER%20BY%20key%20asc&fields=assignee%2Cprogress%2Cproject%2Cissuetype%2Cstatus.json"
-                                };
-                            }
+//                            key: "projectData",
+//                            ajaxOptions: function() {
+//                                return {
+//                                    type: "GET",
+//                                    dataType: "json",
+//                                    contentType: "application/json",
+//                                };
+//                            }
                         }]
                     },
                     config: {
