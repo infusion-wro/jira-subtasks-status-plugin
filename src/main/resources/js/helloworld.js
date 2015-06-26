@@ -26,7 +26,7 @@ function startGadget(baseUrl) {
 
 
 function displayInGadget(content){
-    gadget.getView().html(content);
+    gadget.getView().html('<div class="project-status" >'+content+'</div>');
 
     gadgets.window.adjustHeight();
 }
