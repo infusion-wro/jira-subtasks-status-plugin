@@ -25,9 +25,14 @@
         <transformation extension="less">
             <transformer key="less-transformer"/>
         </transformation>
+        <transformation extension="soy">
+            <transformer key="soyTransformer"/>
+        </transformation>
         <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <dependency>com.atlassian.soy.soy-template-plugin:soy-deps</dependency>
         <resource type="download" name="helloworld.js" location="/js/helloworld.js"/>
         <resource type="download" name="helloworld.css" location="/css/helloworld.less"/>
+        <resource type="download" name="helloworld-templates.js" location="/templates/helloworld.soy" />
         <context>helloworld</context>
     </web-resource>
 
