@@ -1,0 +1,252 @@
+﻿@cLightBorder: #ccc;
+@cText: #292929;
+@cTitle: #333;
+@cLabel: #999;
+
+@sizeBarHeight: 10px;
+@bgBlue: #0067B1;
+@bgOrange: #e24100;
+@bgLime: #c9d616;
+@bgSky: #29afca;
+
+.br-left(@size) {
+    -webkit-border-top-left-radius: @size;
+    -webkit-border-bottom-left-radius: @size;
+    -moz-border-radius-topleft: @size;
+    -moz-border-radius-bottomleft: @size;
+    border-top-left-radius: @size;
+    border-bottom-left-radius: @size;
+}
+.br-right(@size) {
+    -webkit-border-top-right-radius: @size;
+    -webkit-border-bottom-right-radius: @size;
+    -moz-border-radius-topright: @size;
+    -moz-border-radius-bottomright: @size;
+    border-top-right-radius: @size;
+    border-bottom-right-radius: @size;
+}
+@-webkit-keyframes showLabel {
+    from {
+        margin-top: 0px;
+        opacity: 0;
+    }
+    to {
+        margin-top: -1.5em;
+        opacity: 1;
+    }
+}
+
+html, body {
+    background:red;
+}
+
+/* main area of a chart starts below*/
+.project-status {
+    background: #fff;
+    padding: 10px 20px 20px 20px;
+}
+
+.chart-container {
+    max-width: 900px;
+}
+
+.chart-box {
+    width: 48%;
+    border-bottom: solid 1px  @cLightBorder;
+    position: relative;
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 20px;
+    &:nth-child(2n+1) {
+        margin-right: 1%;
+    }
+
+    @media screen and (max-width: 760px) {
+        width: 100%;
+        display: block;
+    }
+    .container {
+        padding: 10px;
+    }
+}
+.key-value {
+    float: left;
+    font-size: 2.5em;
+    line-height: 0.8em;
+    font-weight: bold;
+    margin-right: 5px;
+}
+.key-label {
+    padding-left: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    span {
+        color: @cLabel;
+        display: block;
+    }
+}
+.chart {
+    position: relative;
+    border-radius: 6px;
+    background: #9AB0C0;
+    border: solid 1px #fff;
+    margin: 4px 0;
+    text-align: left;
+    height: @sizeBarHeight;
+    font-size: 0px;
+    &:hover {
+        border-color: #9AB0C0;
+        background: #fff;
+        .bar {
+            opacity: 0.3;
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+    .bar {
+        display: inline-block;
+        height: @sizeBarHeight;
+        margin: 0;
+        background: @bgSky;
+        text-align: center;
+        transition: all 0.5s ease;
+        z-index: 100;
+        label {
+            font-size: 12px;
+            position: absolute;
+            z-index: 9999;
+            opacity: 0;
+            display: none;
+            margin-top: 0px;
+            padding: 4px;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            height: 12px;
+            border: solid 1px @cLabel;
+            background: #fdfddd;
+            span {
+                font-size: 12px;
+            }
+        }
+        &:hover {
+            label {
+                -webkit-animation-name: showLabel;
+                -webkit-animation-duration: 1s;
+                -webkit-animation-delay: 0.5s;
+                -webkit-animation-iteration-count: 1;
+                -webkit-animation-fill-mode:forwards;
+                display: inline-block;
+            }
+        }
+
+        &:first-child {
+            .br-left(10px);
+        }
+
+        &:last-child {
+            .br-right(10px);
+        }
+
+        &:nth-child(2n) {
+            background: @bgLime;        
+        }
+        &:nth-child(3n) {
+            background: @bgOrange;        
+        }
+
+        &:nth-child(4n) {
+            background: @bgBlue;        
+        }
+        &:nth-child(5n) {
+             background: @bgSky;
+        }
+    }
+}
+a.show-more {
+    display: block;
+    padding: 5px;
+    border-radius: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: @cLabel;
+    color: #fff;
+    &:hover {
+        background: @bgBlue;
+    }
+}
+.chart-description {
+    color: @cLabel;
+    text-transform: uppercase;
+}
+
+.chart-details {
+    display: block;
+    position: relative;
+    > a {
+        position: absolute;
+        top: 50%;
+        margin-top: -0.5em;
+        &.prev {
+            left: 0;
+        }
+        &.next {
+            right: 0;
+        }
+    }
+}
+.details-carousel {
+    width: auto;
+    overflow: hidden;
+    position: relative;
+}
+.chart-group {
+    border: solid 1px @cLightBorder;
+    z-index: 1999;
+    background: #fff;
+    width: 100%;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    header {
+        padding: 10px;
+        span {
+            text-transform: uppercase;
+            font-size: 10px;
+            color: @cLabel;
+            display: block;
+        }
+        h2 {
+            margin-top: 0;
+        }
+
+    }
+    .chart-box {
+        border: none;
+        width: auto;
+        display: block;
+        border-bottom: solid 1px @cLightBorder;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
+/* configuration */
+
+.gadget .footer {
+  position: relative;
+}
+
+form.aui {
+    .field-group > label {
+        padding: 10px 0 0;
+    }
+    .field-group > input {
+        margin-top: 10px;
+    }
+    .select {
+        padding: 4px 5px 5px;
+    }
+}

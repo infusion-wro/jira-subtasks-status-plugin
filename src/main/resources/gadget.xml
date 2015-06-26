@@ -16,6 +16,7 @@
         <Require feature="setprefs"/>
         <Require feature="dynamic-height"/>
         #oauth
+        #supportedLocales("gadget.common")
         <Locale messages="__ATLASSIAN_BASE_URL__/download/resources/jira-gadget-tutorial-plugin/i18n/ALL_ALL.xml"/>
     </ModulePrefs>
 
@@ -29,7 +30,7 @@
         #requireResource("jira-gadget-tutorial-plugin:helloworld-resources")
         #includeResources()
 
-        <h1>Hello from the Atlassian Gadget Tutorial!</h1>
+        <h1>Hello from the Atlassian Gadget Tutorial2!</h1>
 
         <script type="text/javascript">
             startGadget("__ATLASSIAN_BASE_URL__");

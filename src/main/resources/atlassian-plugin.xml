@@ -20,8 +20,14 @@
     <resource type="download" name="i18n/ALL_ALL.xml" location="i18n/ALL_ALL.xml">
         <param name="content-type" value="text/xml; charset=UTF-8"/>
     </resource>
+
     <web-resource key="helloworld-resources" name="helloworld Web Resources">
+        <transformation extension="less">
+            <transformer key="less-transformer"/>
+        </transformation>
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
         <resource type="download" name="helloworld.js" location="/js/helloworld.js"/>
+        <resource type="download" name="helloworld.css" location="/css/helloworld.less"/>
         <context>helloworld</context>
     </web-resource>
 
@@ -33,33 +39,32 @@
     <rest key="tutorial-gadget-rest-resources" path="/tutorial-gadget" version="1.0">
         <description>Provides the REST resource for the project list.</description>
     </rest>
-
     <!--
         Imports the SAL UserManager class from JIRA so it can be used by
         ProjectsResource.
      -->
     <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager"/>
-    <properties>
-        <property>
-            <key>versionId</key>
-            <name>common.concepts.version</name>
-            <description>report.timetracking.version.description</description>
-            <type>select</type>
-            <values class="com.atlassian.jira.portal.VersionOptionalValuesGenerator"/>
-        </property>
-        <property>
-            <key>sortingOrder</key>
-            <name>report.timetracking.sortingorder</name>
-            <description>report.timetracking.sortingorder.description</description>
-            <type>select</type>
-            <values class="com.atlassian.jira.portal.SortingValuesGenerator"/>
-        </property>
-        <property>
-            <key>completedFilter</key>
-            <name>report.timetracking.filter</name>
-            <description>report.timetracking.filter.description</description>
-            <type>select</type>
-            <values class="com.atlassian.jira.portal.FilterValuesGenerator"/>
-        </property>
-    </properties>
+    <!--<properties>-->
+        <!--<property>-->
+            <!--<key>versionId</key>-->
+            <!--<name>common.concepts.version</name>-->
+            <!--<description>report.timetracking.version.description</description>-->
+            <!--<type>select</type>-->
+            <!--<values class="com.atlassian.jira.portal.VersionOptionalValuesGenerator"/>-->
+        <!--</property>-->
+        <!--<property>-->
+            <!--<key>sortingOrder</key>-->
+            <!--<name>report.timetracking.sortingorder</name>-->
+            <!--<description>report.timetracking.sortingorder.description</description>-->
+            <!--<type>select</type>-->
+            <!--<values class="com.atlassian.jira.portal.SortingValuesGenerator"/>-->
+        <!--</property>-->
+        <!--<property>-->
+            <!--<key>completedFilter</key>-->
+            <!--<name>report.timetracking.filter</name>-->
+            <!--<description>report.timetracking.filter.description</description>-->
+            <!--<type>select</type>-->
+            <!--<values class="com.atlassian.jira.portal.FilterValuesGenerator"/>-->
+        <!--</property>-->
+    <!--</properties>-->
 </atlassian-plugin>

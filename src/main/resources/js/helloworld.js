@@ -27,6 +27,8 @@ function startGadget(baseUrl) {
 
 function displayInGadget(content){
     gadget.getView().html(content);
+
+    gadgets.window.adjustHeight();
 }
 function initGadget() {
                 gadget = AJS.Gadget({
@@ -125,17 +127,27 @@ function initGadget() {
                                                         });
                                                     }
                                                     displayInGadget(sprints);
+                                                    displayInGadget(sprints+'    <div class="chart-box"><div class="container">'+
+                                                                                '<div class="key-value">{{keyValue}}</div>'+
+                                                                                 '<div class="key-label">{{keyLabel}}</div>'+
+                                                                                 '<div class="chart">'+
+                                                                                 '<div class="bar val" style="width: 30%;" title="label1"><label><span>labelstsgs1</span></label></div>'+
+                                                                                 '<div class="bar val" style="width: 50%;" title="label1"><label><span>labelstsgs1</span></label></div>'+
+                                                                             '     </div>'+
+                                                                              '   <div class="chart-description">{{description}}</div>'+
+                                                                            ' </div>'+
+                                                                         '</div>');
                                                 },
                                              error: function(args){
                                                  console.log('Error while retrieving sprints for rapidview: ',args.responseText);
-                                                 displayInGadget(AJS.$("<div/>").text(args.responseText));
+                                                 displayInGadget(AJS.$("<div/>").text('Error while retrieving sprints for rapidview: ' + args.responseText));
 
                                              }
                                         });
                                     },
                                 error: function(args){
                                     console.log('Error while retrieving rapidviews for project, args: ',args.responseText);
-                                    displayInGadget(AJS.$("<div/>").text(args.responseText));
+                                    displayInGadget(AJS.$("<div/>").text('Error while retrieving rapidviews for project, args: '+args.responseText));
 
                                 }
                             });
