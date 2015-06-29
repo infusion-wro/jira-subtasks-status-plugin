@@ -17,7 +17,7 @@
         <Require feature="dynamic-height"/>
         #oauth
         #supportedLocales("gadget.common")
-        <Locale messages="__ATLASSIAN_BASE_URL__/download/resources/jira-gadget-tutorial-plugin/i18n/ALL_ALL.xml"/>
+        <Locale messages="__ATLASSIAN_BASE_URL__/download/resources/infusion-jira-subtasks-status/i18n/ALL_ALL.xml"/>
     </ModulePrefs>
 
     <UserPref name="jiraProject" datatype="string" default_value=""/>
@@ -27,10 +27,10 @@
         <![CDATA[
         #requireResource("com.atlassian.jira.gadgets:common")
         #requireResource("com.atlassian.gadgets.publisher:ajs-gadgets")
-        #requireResource("jira-gadget-tutorial-plugin:helloworld-resources")
+        #requireResource("infusion-jira-subtasks-status:infusion-jira-subtasks-status-resources")
         #includeResources()
 
-        <h1>Hello from the Atlassian Gadget Tutorial2!</h1>
+        <!--<h1>Hello from the Atlassian Gadget Tutorial!</h1>-->
 
         <script type="text/javascript">
             startGadget("__ATLASSIAN_BASE_URL__");

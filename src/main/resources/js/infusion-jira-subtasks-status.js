@@ -1,7 +1,5 @@
 var gadget;
-var appLinkId;
 var projectKey;
-var epicCaption;
 
 var atlassianBaseUrl;
 var gadget;
@@ -26,7 +24,7 @@ function startGadget(baseUrl) {
 
 
 function displayInGadget(content){
-    gadget.getView().html('<div class="project-status" >'+content+'</div>');
+    gadget.getView().html('<h1>Sprints statuses for project <span>'+projectKey+'</span> </h1><div class="project-status" >'+content+'</div>');
 
     gadgets.window.adjustHeight();
 }
@@ -39,7 +37,7 @@ function initGadget() {
                             console.log("args: ",args);
                             var gadget = this;
 
-                            var projectKey = gadget.getPref("jiraProject");
+                            projectKey = gadget.getPref("jiraProject");
                             var sprintsNo = gadget.getPref("sprintsNo");
                             console.log('projectKey ',projectKey)
                             console.log('sprintsNo ',sprintsNo)
@@ -126,8 +124,7 @@ function initGadget() {
                                                                 }
                                                         });
                                                     }
-                                                    displayInGadget(sprints);
-                                                    displayInGadget(sprints + Infusion.HelloWorld.Templates.chartBox({keyValue: 'key', keyLabel:'label', description:'desc'}));
+                                                    displayInGadget(sprints + Infusion.SubtasksStatus.Templates.chartBox({keyValue: 'key', keyLabel:'label', description:'desc'}));
                                                 },
                                              error: function(args){
                                                  console.log('Error while retrieving sprints for rapidview: ',args.responseText);

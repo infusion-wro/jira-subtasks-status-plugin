@@ -6,16 +6,16 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.atlassian.tutorial</groupId>
-    <artifactId>helloworld</artifactId>
+    <artifactId>infusion-jira-subtasks-status</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <organization>
-        <name>Example Company</name>
-        <url>http://www.example.com/</url>
+        <name>Infusion Development</name>
+        <url>http://www.infusion.com/</url>
     </organization>
 
-    <name>helloworld</name>
-    <description>This is the com.atlassian.tutorial:helloworld plugin for Atlassian JIRA.</description>
+    <name>infusion-jira-subtasks-status</name>
+    <description>Gadget to display current status of subtasks within sprint.</description>
     <packaging>atlassian-plugin</packaging>
 
     <dependencies>

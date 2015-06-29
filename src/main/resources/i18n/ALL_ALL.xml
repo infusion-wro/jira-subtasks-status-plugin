@@ -1,5 +1,5 @@
 <messagebundle>
-    <msg name="gadget.title">Test JIRA Tutorial Gadget</msg>
-    <msg name="gadget.description">A sample gadget to install into JIRA.</msg>
+    <msg name="gadget.title">Sprint status</msg>
+    <msg name="gadget.description">Gadget to display current status of subtasks within sprint.</msg>
 
 </messagebundle>

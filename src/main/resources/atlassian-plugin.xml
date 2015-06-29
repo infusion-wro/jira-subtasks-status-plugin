@@ -1,27 +1,28 @@
-<atlassian-plugin key="jira-gadget-tutorial-plugin"
-                  name="JIRA Gadget Tutorial Plugin"
+<atlassian-plugin key="infusion-jira-subtasks-status"
+                  name="JIRA Gadget- subtasks status"
                   pluginsVersion="2">
     <!-- Contains plugin metadata. -->
     <plugin-info>
-        <description>A sample plugin showing how to add a gadget to JIRA.</description>
-        <vendor name="Atlassian" url="http://www.atlassian.com"/>
+        <description>Gadget to display current status of subtasks within sprint.</description>
+        <vendor name="Infusion" url="http://www.infusion.com"/>
         <version>1.0</version>
         <application-version min="4.0"/>
     </plugin-info>
 
     <!--
         Registers the gadget spec as a plugin module. This allows the gadget to
-        appear in the gadget directory and also allows administrators to
+        appear in the gadget directory and also allows admini
+        strators to
         disable/enable the gadget.
      -->
-    <gadget key="tutorial-gadget" name="JIRA Tutorial Gadget" location="gadget.xml"/>
+    <gadget key="subtasks-status-gadget" name="JIRA Gadget- subtasks status Gadget" location="gadget.xml"/>
 
     <!-- Makes the gadget Locale messages available for the gadget's use. -->
     <resource type="download" name="i18n/ALL_ALL.xml" location="i18n/ALL_ALL.xml">
         <param name="content-type" value="text/xml; charset=UTF-8"/>
     </resource>
 
-    <web-resource key="helloworld-resources" name="helloworld Web Resources">
+    <web-resource key="infusion-jira-subtasks-status-resources" name="subtasks status Web Resources">
         <transformation extension="less">
             <transformer key="less-transformer"/>
         </transformation>
@@ -30,10 +31,10 @@
         </transformation>
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.soy.soy-template-plugin:soy-deps</dependency>
-        <resource type="download" name="helloworld.js" location="/js/helloworld.js"/>
-        <resource type="download" name="helloworld.css" location="/css/helloworld.less"/>
-        <resource type="download" name="helloworld-templates.js" location="/templates/helloworld.soy" />
-        <context>helloworld</context>
+        <resource type="download" name="infusion-jira-subtasks-status.js" location="/js/infusion-jira-subtasks-status.js"/>
+        <resource type="download" name="infusion-jira-subtasks-status.css" location="/css/infusion-jira-subtasks-status.less"/>
+        <resource type="download" name="infusion-jira-subtasks-status-templates.js" location="/templates/infusion-jira-subtasks-status.soy" />
+        <context>infusion-jira-subtasks-status</context>
     </web-resource>
 
 
@@ -49,27 +50,6 @@
         ProjectsResource.
      -->
     <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager"/>
-    <!--<properties>-->
-        <!--<property>-->
-            <!--<key>versionId</key>-->
-            <!--<name>common.concepts.version</name>-->
-            <!--<description>report.timetracking.version.description</description>-->
-            <!--<type>select</type>-->
-            <!--<values class="com.atlassian.jira.portal.VersionOptionalValuesGenerator"/>-->
-        <!--</property>-->
-        <!--<property>-->
-            <!--<key>sortingOrder</key>-->
-            <!--<name>report.timetracking.sortingorder</name>-->
-            <!--<description>report.timetracking.sortingorder.description</description>-->
-            <!--<type>select</type>-->
-            <!--<values class="com.atlassian.jira.portal.SortingValuesGenerator"/>-->
-        <!--</property>-->
-        <!--<property>-->
-            <!--<key>completedFilter</key>-->
-            <!--<name>report.timetracking.filter</name>-->
-            <!--<description>report.timetracking.filter.description</description>-->
-            <!--<type>select</type>-->
-            <!--<values class="com.atlassian.jira.portal.FilterValuesGenerator"/>-->
-        <!--</property>-->
-    <!--</properties>-->
+
+
 </atlassian-plugin>
