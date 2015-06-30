@@ -23,8 +23,9 @@ function startGadget(baseUrl) {
 }
 
 
-function displayInGadget(content){
-    gadget.getView().html('<h1>Sprints statuses for project <span>'+projectKey+'</span> </h1><div class="project-status" >'+content+'</div>');
+function displayInGadget(args){
+    var content = Infusion.SubtasksStatus.Templates.chartBox({project: args});
+    gadget.getView().html(content);
 
     gadgets.window.adjustHeight();
 }
@@ -66,6 +67,7 @@ function initGadget() {
                                                     console.log('sprintsNo ',sprintsNo)
                                                     console.log('sprints',_.first(argSprints.sprints,sprintsNo))
                                                     var sprints = AJS.$("<div/>");
+                                                    var results = [];
                                                     for(i=0; i<sprintsNo;i++){
                                                         var sp = argSprints.sprints[i];
                                                         var id = sp.id;
@@ -86,18 +88,21 @@ function initGadget() {
                                                         })
 
                                                         AJS.$.ajax({
-                                                            url: "/rest/api/2/search?jql=project%20%3D%20"+projectKey+"%20and%20Sprint%20%3D%20"+id+"%20and%20type%20%3D%20Sub-task%20ORDER%20BY%20key%20asc&fields=assignee%2Cprogress%2Cproject%2Cissuetype%2Cstatus.json",
+                                                            url: "/rest/api/2/search?jql=project%20%3D%20"+projectKey+"%20and%20Sprint%20%3D%20"+id+"%20and%20type%20%3D%20Sub-task%20ORDER%20BY%20key%20asc&fields=assignee%2Cprogress%2Cproject%2Cissuetype%2Cstatus%2Caggregatetimeoriginalestimate%2Caggregatetimeestimate%2Caggregatetimespent",
                                                             type: "GET",
                                                             async:false,
                                                             dataType: "json",
                                                             contentType: "application/json",
                                                             success:
                                                                 function (arg) {
+                                                                    console.log('issues for sprint ',id,' :',arg.issues)
                                                                     var allsubtasks =_.map(arg.issues,function(issue){
                                                                                         return {
                                                                                             assigned: issue.fields.assignee.displayName,
-                                                                                            orgTime: issue.fields.progress.total,
-                                                                                            remaining: issue.fields.progress.total - issue.fields.progress.progress,
+                                                                                            orgTime: issue.fields.aggregatetimeoriginalestimate,
+                                                                                            remaining: issue.fields.aggregatetimeestimate,
+                                                                                            total: issue.fields.progress.total,
+                                                                                            logged: issue.fields.aggregatetimespent
                                                                                             };
                                                                         });
                                                                     var subtasks=_.groupBy(allsubtasks,function(subtask){return subtask.assigned;})
@@ -108,6 +113,8 @@ function initGadget() {
                                                                                 assigned: memo.assigned,
                                                                                 orgTime: memo.orgTime + fold.orgTime,
                                                                                 remaining: memo.remaining + fold.remaining,
+                                                                                total: memo.total + fold.total,
+                                                                                logged: memo.logged + fold.logged,
                                                                                 };
                                                                             });
                                                                         })
@@ -119,12 +126,19 @@ function initGadget() {
                                                                             AJS.$("<li/>").text(this.assigned +" estimated time: "+this.orgTime/3600 + " remainging: "+this.remaining/3600))
 
                                                                     });
+                                                                    results[i] = {sprintId: id, sprintName: name, userStats: grouped};
                                                                     sprints.append(userList);
+
 
                                                                 }
                                                         });
                                                     }
-                                                    displayInGadget(sprints + Infusion.SubtasksStatus.Templates.chartBox({keyValue: 'key', keyLabel:'label', description:'desc'}));
+
+                                                    var displayInfo ={projectKey: projectKey, sprints: results};
+                                                    console.log('displayInfo: ',displayInfo);
+
+                                                    displayInGadget(displayInfo);
+                                                    //displayInGadget(sprints.append(Infusion.SubtasksStatus.Templates.chartBox({keyValue: 'key', keyLabel:'label', description:'desc'})));
                                                 },
                                              error: function(args){
                                                  console.log('Error while retrieving sprints for rapidview: ',args.responseText);

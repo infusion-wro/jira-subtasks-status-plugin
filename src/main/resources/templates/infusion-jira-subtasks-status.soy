@@ -1,20 +1,39 @@
 {namespace Infusion.SubtasksStatus.Templates}
 
+
 /**
  * Container for a multiple selection macro parameter
- * @param keyValue
- * @param keyLabel
- * @param description
+ * @param project
  */
 {template .chartBox}
-<div class="chart-box"><div class="container">
-        <div class="key-value">{$keyValue}</div>
-         <div class="key-label">{$keyLabel}</div>
-         <div class="chart">
-             <div class="bar val done" style="width: 30%;" title="label1"></div>
-             <div class="bar val todo" style="width: 70%;" title="label2"></div>
-          </div>
-         <div class="chart-description">{$description}</div>
-    </div>
+<h1>Sprints statuses for project <span>{$project.projectKey}</span> </h1>
+<div class="project-status" >
+    {foreach $sprint in $project.sprints}
+    <div class="chart-box">
+        <div class="container">
+            <div class="chart-description">{$sprint.sprintName}</div>
+            {foreach $userStat in $sprint.userStats}
+            <div class="key-value">{$userStat.orgTime/3600}h</div>
+            <div class="key-label">{$userStat.assigned}</div>
+            Estimated
+            <div class="chart">
+                <div class="bar val estimated" style="width: {($userStat.orgTime/$userStat.total)*100}%;" title="{$userStat.orgTime/3600}h"></div>
+                <div class="bar val back" style="width: {(1-$userStat.orgTime/$userStat.total)*100}%;" title="{$userStat.orgTime/3600}h"></div>
+            </div>
+            remaining<div class="chart">
+                <div class="bar val back" style="width: {(1-$userStat.remaining/$userStat.total)*100}%;" title="{$userStat.remaining/3600}h"></div>
+                <div class="bar val remaining" style="width: {$userStat.remaining/$userStat.total*100}%;" title="{$userStat.remaining/3600}h"></div>
+            </div>
+            logged
+            <div class="chart">
+                <div class="bar val logged" style="width: {($userStat.logged/$userStat.total)*100}%;" title="{$userStat.logged/3600}h"></div>
+                <div class="bar val back" style="width: {(1-$userStat.logged/$userStat.total)*100}%;" title="{$userStat.logged/3600}h"></div>
+            </div>
+            {/foreach}
+        </div>
+     </div>
+     {/foreach}
  </div>
 {/template}
+
+
