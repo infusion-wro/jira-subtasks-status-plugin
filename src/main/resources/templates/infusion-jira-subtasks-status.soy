@@ -13,6 +13,8 @@
         <div class="container">
             <div class="chart-description">{$sprint.sprintName}</div>
             {foreach $userStat in $sprint.userStats}
+
+    <div class="chart-box">
             <div class="key-value">{$userStat.orgTime/3600}h</div>
             <div class="key-label">{$userStat.assigned}</div>
             Estimated
@@ -28,6 +30,7 @@
             <div class="chart">
                 <div class="bar val logged" style="width: {($userStat.logged/$userStat.total)*100}%;" title="{$userStat.logged/3600}h"></div>
                 <div class="bar val back" style="width: {(1-$userStat.logged/$userStat.total)*100}%;" title="{$userStat.logged/3600}h"></div>
+            </div>
             </div>
             {/foreach}
         </div>
