@@ -21,8 +21,8 @@
     <div class="chart-box">
             <table  style="width:100%">
               <tr>
-                <td rowspan="2" style="width:20%;" align="center">
-                    <img class="key-value" align="center" src="{$userStat.avatarUrl}"></img>
+                <td rowspan="2" style="width:20%;  text-align:center;">
+                    <img src="{$userStat.avatarUrl}"></img>
                 </td>
                 <td style="width:15%; text-align: right;">Estimated</td>
                 <td>
@@ -34,7 +34,7 @@
                 <td style="width:15%; text-align: left;">{round($userStat.orgTime/3600)}h</td>
               </tr>
               <tr>
-                <td style="width:15%; text-align: right;">remaining</td>
+                <td style="width:15%; text-align: right;">Remaining</td>
                 <td>
                     <div class="chart">
                         <div class="bar val back" style="width: {(1-$userStat.remaining/$userStat.total)*100}%;" title="{$userStat.remaining/3600}h"></div>
@@ -45,7 +45,7 @@
               </tr>
               <tr>
                 <th style="width:15%; text-align: center;">{$userStat.assigned}</th>
-                <td style="width:15%; text-align: right;">logged</td>
+                <td style="width:15%; text-align: right;">Logged</td>
                 <td>
                     <div class="chart">
                         <div class="bar val logged" style="width: {($userStat.logged/$userStat.total)*100}%;" title="{$userStat.logged/3600}h"></div>

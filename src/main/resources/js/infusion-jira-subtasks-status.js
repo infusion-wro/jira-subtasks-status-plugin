@@ -9,17 +9,6 @@ function startGadget(baseUrl) {
     atlassianBaseUrl = baseUrl;
     initGadget();
 
-//    AJS.$.ajax({
-//        url: atlassianBaseUrl + "/rest/jiraanywhere/1.0/servers",
-//        type: "GET",
-//        dataType: "json",
-//        contentType: "application/json",
-//        success:
-//            function (servers) {
-//                appLinkId = servers[0].id;
-//                initGadget();
-//            }
-//    });
 }
 
 
@@ -29,6 +18,13 @@ function displayInGadget(args){
 
     gadgets.window.adjustHeight();
 }
+
+function displayContentInGadget(content){
+    gadget.getView().html(content);
+
+    gadgets.window.adjustHeight();
+}
+
 function initGadget() {
                 gadget = AJS.Gadget({
                     baseUrl: atlassianBaseUrl,
@@ -52,8 +48,6 @@ function initGadget() {
                                 contentType: "application/json",
                                 success:
                                     function (views) {
-                                        //todo Here probably can be more than one projectview for project
-                                        console.log("views: ",views);
                                         var viewId = views.views[0].id;
                                         AJS.$.ajax({
                                             url: "/rest/greenhopper/1.0/sprintquery/"+viewId+"?includeHistoricSprints=false&includeFutureSprints=true",
@@ -67,13 +61,14 @@ function initGadget() {
                                                     var results = [];
                                                     for(i=0; i<sprintsNo;i++){
                                                         var sp = argSprints.sprints[i];
+                                                        if(sp === undefined)
+                                                            continue;
                                                         var id = sp.id;
                                                         var name = sp.name;
                                                         var result = {
                                                             sprintId: id,
                                                             sprintName: name,
                                                             };
-                                                        console.log('sp ',name,' ',sp)
                                                         sprints.append(AJS.$("<b/>").text(name))
                                                         AJS.$.ajax({
                                                             url: "/rest/greenhopper/1.0/rapid/charts/sprintreport?rapidViewId="+argSprints.rapidViewId+"&sprintId="+id,
@@ -128,13 +123,11 @@ function initGadget() {
 
                                                                     var userList = AJS.$("<ul/>");
                                                                     AJS.$(grouped).each(function(group) {
-                                                                        console.log('group',this.assigned)
                                                                         userList.append(
                                                                             AJS.$("<li/>").text(this.assigned +" estimated time: "+this.orgTime/3600 + " remainging: "+this.remaining/3600))
 
                                                                     });
                                                                     result.userStats= grouped;
-                                                                    //results[i] = {sprintId: id, sprintName: name, userStats: grouped};
                                                                     results[i] = result;
                                                                     sprints.append(userList);
 
@@ -158,18 +151,18 @@ function initGadget() {
                                                     console.log('displayInfo: ',displayInfo);
 
                                                     displayInGadget(displayInfo);
-                                                    //displayInGadget(sprints.append(Infusion.SubtasksStatus.Templates.chartBox({keyValue: 'key', keyLabel:'label', description:'desc'})));
+
                                                 },
                                              error: function(args){
                                                  console.log('Error while retrieving sprints for rapidview: ',args.responseText);
-                                                 displayInGadget(AJS.$("<div/>").text('Error while retrieving sprints for rapidview: ' + args.responseText));
+                                                 displayContentInGadget(AJS.$("<div/>").text('Error while retrieving sprints for rapidview: ' + args.responseText));
 
                                              }
                                         });
                                     },
                                 error: function(args){
                                     console.log('Error while retrieving rapidviews for project, args: ',args.responseText);
-                                    displayInGadget(AJS.$("<div/>").text('Error while retrieving rapidviews for project, args: '+args.responseText));
+                                    displayContentInGadget(AJS.$("<div/>").text('Error while retrieving rapidviews for project, args: '+args.responseText));
 
                                 }
                             });
@@ -197,13 +190,13 @@ function initGadget() {
                                             userpref: "jiraProject",
                                             type: "string",
                                             value: "",
-                                            label: "jira project"
+                                            label: "Project key: "
                                         },
                                         {
                                             userpref: "sprintsNo",
                                             type: "int",
                                             value: "",
-                                            label: "sprints"
+                                            label: "Number of sprints: "
                                         },
                                         AJS.gadget.fields.nowConfigured()]
                                         }
