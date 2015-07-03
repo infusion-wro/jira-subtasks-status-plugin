@@ -4,7 +4,7 @@
 @cLabel: #999;
 
 @sizeBarHeight: 10px;
-@bgEmpty: #9AB0C0;
+@bgEmpty: #cccccc;
 @bgBlue: #0067B1;
 @bgOrange: #e24100;
 @bgLime: #c9d616;
@@ -34,6 +34,7 @@
     .chart-container {
         max-width: 900px;
     }
+
 
     .chart-box {
         width: 48%;
@@ -81,7 +82,7 @@
         position: relative;
         border-radius: 6px;
         overflow: hidden;
-        background: @bgSky;
+        background: @bgEmpty;
         border: solid 1px #fff;
         margin: 4px 0;
         text-align: left;
@@ -102,7 +103,7 @@
             float: left;
             height: @sizeBarHeight;
             margin: 0;
-            background: @bgSky;
+            background: @bgEmpty;
             text-align: center;
             transition: all 0.5s ease;
             z-index: 100;
@@ -159,12 +160,13 @@
             &.remaining {
                  background: #ec8e00;
             }
-            &.logged {
-                 background: #51a825;
-            }
             &.back {
                  background: #cccccc;
             }
+            &.logged
+            {
+                  background: #51a825;
+             }
             &.todo {
                 background: @bgSky;
             }
@@ -184,8 +186,14 @@
         }
     }
     .chart-description {
-        color: @cLabel;
-        text-transform: uppercase;
+        border-bottom: solid 1px  @cLightBorder;
+        font-size: 11px;
+        .chart-description-title{
+            color: @cLabel;
+            text-transform: uppercase;
+            font-size: 15px;
+        }
+
     }
 
     .chart-details {
@@ -260,4 +268,6 @@
         }
     }
 
+
 }
+

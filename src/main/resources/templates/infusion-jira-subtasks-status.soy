@@ -6,31 +6,55 @@
  * @param project
  */
 {template .chartBox}
-<h1>Sprints statuses for project <span>{$project.projectKey}</span> </h1>
 <div class="project-status" >
+<div style="text-align: center; font-size: 18px" >  <b>{$project.projectName}</b> ({$project.projectKey}) </div>
     {foreach $sprint in $project.sprints}
     <div class="chart-box">
         <div class="container">
-            <div class="chart-description">{$sprint.sprintName}</div>
+            <div class="chart-description ">
+            <div class="chart-description-title ">{$sprint.sprintName} </div>
+            <div>Start Date: {$sprint.startDate} End Date: {$sprint.endDate}</div>
+            </div>
+
             {foreach $userStat in $sprint.userStats}
 
     <div class="chart-box">
-            <div class="key-value">{$userStat.orgTime/3600}h</div>
-            <div class="key-label">{$userStat.assigned}</div>
-            Estimated
-            <div class="chart">
-                <div class="bar val estimated" style="width: {($userStat.orgTime/$userStat.total)*100}%;" title="{$userStat.orgTime/3600}h"></div>
-                <div class="bar val back" style="width: {(1-$userStat.orgTime/$userStat.total)*100}%;" title="{$userStat.orgTime/3600}h"></div>
-            </div>
-            remaining<div class="chart">
-                <div class="bar val back" style="width: {(1-$userStat.remaining/$userStat.total)*100}%;" title="{$userStat.remaining/3600}h"></div>
-                <div class="bar val remaining" style="width: {$userStat.remaining/$userStat.total*100}%;" title="{$userStat.remaining/3600}h"></div>
-            </div>
-            logged
-            <div class="chart">
-                <div class="bar val logged" style="width: {($userStat.logged/$userStat.total)*100}%;" title="{$userStat.logged/3600}h"></div>
-                <div class="bar val back" style="width: {(1-$userStat.logged/$userStat.total)*100}%;" title="{$userStat.logged/3600}h"></div>
-            </div>
+            <table  style="width:100%">
+              <tr>
+                <td rowspan="2" style="width:20%;" align="center">
+                    <img class="key-value" align="center" src="{$userStat.avatarUrl}"></img>
+                </td>
+                <td style="width:15%; text-align: right;">Estimated</td>
+                <td>
+                    <div class="chart">
+                        <div class="bar val estimated" style="width: {($userStat.orgTime/$userStat.total)*100}%;" title="{$userStat.orgTime/3600}h"></div>
+                        <div class="bar val back" style="width: {(1-$userStat.orgTime/$userStat.total)*100}%;" title="{$userStat.orgTime/3600}h"></div>
+                    </div>
+                </td>
+                <td style="width:15%; text-align: left;">{round($userStat.orgTime/3600)}h</td>
+              </tr>
+              <tr>
+                <td style="width:15%; text-align: right;">remaining</td>
+                <td>
+                    <div class="chart">
+                        <div class="bar val back" style="width: {(1-$userStat.remaining/$userStat.total)*100}%;" title="{$userStat.remaining/3600}h"></div>
+                        <div class="bar val remaining" style="width: {$userStat.remaining/$userStat.total*100}%;" title="{$userStat.remaining/3600}h"></div>
+                    </div>
+                </td>
+                <td style="width:15%; text-align: left;">{round($userStat.remaining/3600)}h</td>
+              </tr>
+              <tr>
+                <th style="width:15%; text-align: center;">{$userStat.assigned}</th>
+                <td style="width:15%; text-align: right;">logged</td>
+                <td>
+                    <div class="chart">
+                        <div class="bar val logged" style="width: {($userStat.logged/$userStat.total)*100}%;" title="{$userStat.logged/3600}h"></div>
+                        <div class="bar val back" style="width: {(1-$userStat.logged/$userStat.total)*100}%;" title="{$userStat.logged/3600}h"></div>
+                    </div>
+                </td>
+                <td style="width:15%; text-align: left;">{round($userStat.logged/3600)}h</td>
+              </tr>
+            </table>
             </div>
             {/foreach}
         </div>

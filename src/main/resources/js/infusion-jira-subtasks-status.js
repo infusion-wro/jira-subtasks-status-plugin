@@ -46,7 +46,6 @@ function initGadget() {
 
 
                             AJS.$.ajax({
-                                //url: atlassianBaseUrl + "/rest/greenhopper/1.0/rapidviews/list?projectKey=PROJ ",
                                 url: "/rest/greenhopper/1.0/rapidviews/list?projectKey="+projectKey,
                                 type: "GET",
                                 dataType: "json",
@@ -64,14 +63,17 @@ function initGadget() {
                                             success:
                                                 function (argSprints) {
                                                     var ids =_.first(argSprints.sprints,sprintsNo).map(function(sprint){return sprint.id});
-                                                    console.log('sprintsNo ',sprintsNo)
-                                                    console.log('sprints',_.first(argSprints.sprints,sprintsNo))
                                                     var sprints = AJS.$("<div/>");
                                                     var results = [];
                                                     for(i=0; i<sprintsNo;i++){
                                                         var sp = argSprints.sprints[i];
                                                         var id = sp.id;
                                                         var name = sp.name;
+                                                        var result = {
+                                                            sprintId: id,
+                                                            sprintName: name,
+                                                            };
+                                                        console.log('sp ',name,' ',sp)
                                                         sprints.append(AJS.$("<b/>").text(name))
                                                         AJS.$.ajax({
                                                             url: "/rest/greenhopper/1.0/rapid/charts/sprintreport?rapidViewId="+argSprints.rapidViewId+"&sprintId="+id,
@@ -81,7 +83,10 @@ function initGadget() {
                                                             contentType: "application/json",
                                                             success:
                                                                 function (args) {
-                                                                    console.log(args.sprint)
+                                                                    result.startDate = args.sprint.startDate;
+                                                                    result.endDate = args.sprint.endDate;
+                                                                    result.state= args.sprint.state;
+                                                                    console.log('sprint report ',args.sprint)
                                                                     sprints.append(" start date: "+args.sprint.startDate+" end date: "+args.sprint.endDate)
                                                                 }
 
@@ -102,7 +107,8 @@ function initGadget() {
                                                                                             orgTime: issue.fields.aggregatetimeoriginalestimate,
                                                                                             remaining: issue.fields.aggregatetimeestimate,
                                                                                             total: issue.fields.progress.total,
-                                                                                            logged: issue.fields.aggregatetimespent
+                                                                                            logged: issue.fields.aggregatetimespent,
+                                                                                            avatarUrl: issue.fields.assignee.avatarUrls['32x32']
                                                                                             };
                                                                         });
                                                                     var subtasks=_.groupBy(allsubtasks,function(subtask){return subtask.assigned;})
@@ -115,6 +121,7 @@ function initGadget() {
                                                                                 remaining: memo.remaining + fold.remaining,
                                                                                 total: memo.total + fold.total,
                                                                                 logged: memo.logged + fold.logged,
+                                                                                avatarUrl: memo.avatarUrl
                                                                                 };
                                                                             });
                                                                         })
@@ -126,7 +133,9 @@ function initGadget() {
                                                                             AJS.$("<li/>").text(this.assigned +" estimated time: "+this.orgTime/3600 + " remainging: "+this.remaining/3600))
 
                                                                     });
-                                                                    results[i] = {sprintId: id, sprintName: name, userStats: grouped};
+                                                                    result.userStats= grouped;
+                                                                    //results[i] = {sprintId: id, sprintName: name, userStats: grouped};
+                                                                    results[i] = result;
                                                                     sprints.append(userList);
 
 
@@ -135,6 +144,17 @@ function initGadget() {
                                                     }
 
                                                     var displayInfo ={projectKey: projectKey, sprints: results};
+                                                    AJS.$.ajax({
+                                                        url: "/rest/api/2/project/"+projectKey,
+                                                        type: "GET",
+                                                        async:false,
+                                                        dataType: "json",
+                                                        contentType: "application/json",
+                                                        success:
+                                                            function (args) {
+                                                                displayInfo.projectName = args.name;
+                                                            }
+                                                            });
                                                     console.log('displayInfo: ',displayInfo);
 
                                                     displayInGadget(displayInfo);
