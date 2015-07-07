@@ -16,9 +16,9 @@ To configure plugin choose last 'Edit' option from gadget's menu on the left.
 
 There are two properties to be configured:
 
--Project key: Key of the project of which gadget will collect the data
+- Project key: Key of the project grom which gadget will retrive the sprints data
 
-- Number of sprints: How many furhter sprints (including current one) should be displayed in gadget.
+- Number of sprints: How many further sprints (including current one) should be displayed in gadget.
 ![2015-07-07_10h12_29.png](https://bitbucket.org/repo/rzA5da/images/2956729147-2015-07-07_10h12_29.png)
 
 -----------------
